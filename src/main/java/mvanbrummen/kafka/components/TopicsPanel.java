@@ -29,7 +29,32 @@ public class TopicsPanel extends JPanel {
         b.add(BorderLayout.CENTER, buildTree());
 
         splitPane.setLeftComponent(b);
-        splitPane.setRightComponent(buildTable());
+
+        var b2 = new JPanel(new BorderLayout());
+
+        var refreshButton = new JButton();
+        refreshButton.setIcon(new FlatSVGIcon("icons/refresh.svg"));
+        var toolbar2 = new JToolBar();
+        var topicSearchTextField = new JTextField("Search topics");
+
+        var newTopicButton = new JButton("Add Topic");
+        newTopicButton.setIcon(new FlatSVGIcon("icons/plus.svg"));
+
+        var showInternalTopicsButton = new JToggleButton();
+        showInternalTopicsButton.setIcon(new FlatSVGIcon("icons/show.svg"));
+
+        toolbar2.add(topicSearchTextField);
+        toolbar2.add(showInternalTopicsButton);
+        toolbar2.addSeparator();
+        toolbar2.add(refreshButton);
+        toolbar2.addSeparator();
+        toolbar2.add(newTopicButton);
+
+
+        b2.add(BorderLayout.NORTH, toolbar2);
+        b2.add(BorderLayout.CENTER, buildTable());
+
+        splitPane.setRightComponent(b2);
 
 
         add(BorderLayout.CENTER, splitPane);
@@ -39,7 +64,6 @@ public class TopicsPanel extends JPanel {
         add(BorderLayout.SOUTH, bottomToolbar);
 
         setPreferredSize(new Dimension(1000, 600));
-
     }
 
     private JScrollPane buildTree() {
@@ -90,7 +114,7 @@ public class TopicsPanel extends JPanel {
         };
 
         // Column Names
-        String[] columnNames = {"Name", "Partitions", "Count", "Size", "Consumers"};
+        String[] columnNames = {"Topic name", "Partitions", "Count", "Size", "Consumers"};
 
 
         var table = new JTable(data, columnNames);
