@@ -1,5 +1,7 @@
 package mvanbrummen.kafka.components;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
@@ -14,8 +16,22 @@ public class TopicsPanel extends JPanel {
     private void initUI() {
         var splitPane = new JSplitPane();
 
-        splitPane.setLeftComponent(buildTree());
+        var toolbar = new JToolBar();
+        var addButton = new JButton();
+        addButton.setToolTipText("Add a new cluster");
+        addButton.setIcon(new FlatSVGIcon("icons/plus.svg"));
+        toolbar.add(addButton);
+        toolbar.addSeparator();
+
+        var b = new JPanel(new BorderLayout());
+
+        b.add(BorderLayout.NORTH, toolbar);
+        b.add(BorderLayout.CENTER, buildTree());
+
+
+        splitPane.setLeftComponent(b);
         splitPane.setRightComponent(buildTable());
+
 
         add(BorderLayout.CENTER, splitPane);
 
