@@ -3,10 +3,17 @@ package mvanbrummen.kafka.components;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TopicsPanel extends JPanel {
+
+    private DefaultTableModel topicsTableModel;
+    private TableRowSorter<DefaultTableModel> topicsTableSorter;
 
     public TopicsPanel() {
         super(new BorderLayout());
@@ -33,6 +40,7 @@ public class TopicsPanel extends JPanel {
         var b2 = new JPanel(new BorderLayout());
 
         var refreshButton = new JButton();
+
         refreshButton.setIcon(new FlatSVGIcon("icons/refresh.svg"));
         var toolbar2 = new JToolBar();
 
@@ -46,6 +54,20 @@ public class TopicsPanel extends JPanel {
 
         var showInternalTopicsButton = new JToggleButton();
         showInternalTopicsButton.setIcon(new FlatSVGIcon("icons/show.svg"));
+        showInternalTopicsButton.setToolTipText("Toggle showing internal kafka topics");
+
+        topicSearchTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("Event in search field");
+                var text = topicSearchTextField.getText();
+                if (text.trim().length() == 0) {
+                    topicsTableSorter.setRowFilter(null);
+                } else {
+                    topicsTableSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+        });
 
         toolbar2.add(topicSearchTextField);
         toolbar2.add(showInternalTopicsButton);
@@ -97,34 +119,21 @@ public class TopicsPanel extends JPanel {
     }
 
     private JScrollPane buildTable() {
+        topicsTableModel = new DefaultTableModel(new String[]{"Topic name", "Partitions", "Count", "Size", "Consumers"}, 0);
 
-        // Data to be displayed in the JTable
-        String[][] data = {
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic1", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic2", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic2", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-                {"property.foo.foo.foo-topic", "1", "0", "n/a", "34"},
-        };
+        var table = new JTable(topicsTableModel);
 
-        // Column Names
-        String[] columnNames = {"Topic name", "Partitions", "Count", "Size", "Consumers"};
+        topicsTableSorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+        table.setRowSorter(topicsTableSorter);
 
 
-        var table = new JTable(data, columnNames);
+        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic", "1", "0", "0", "0"});
+        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic2", "1", "0", "0", "0"});
+        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic3", "1", "0", "0", "0"});
+        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic4", "69", "0", "0", "0"});
+        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic5", "1", "0", "0", "0"});
+        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic6", "1", "0", "0", "0"});
+        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic7", "1", "0", "0", "0"});
 
         var sp = new JScrollPane(table);
 
