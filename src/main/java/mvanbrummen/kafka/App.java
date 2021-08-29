@@ -1,8 +1,11 @@
 package mvanbrummen.kafka;
 
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import mvanbrummen.kafka.components.TopicsPanel;
+
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class App extends JFrame {
@@ -12,16 +15,7 @@ public class App extends JFrame {
     }
 
     private void initUI() {
-        var bottomPanel = new JPanel(new BorderLayout());
-        var topPanel = new JPanel();
-
-        topPanel.setBackground(Color.gray);
-        topPanel.setPreferredSize(new Dimension(250, 150));
-        bottomPanel.add(topPanel);
-
-        bottomPanel.setBorder(new EmptyBorder(new Insets(20, 20, 20, 20)));
-
-        add(bottomPanel);
+        add(new TopicsPanel());
 
         pack();
 
@@ -31,6 +25,9 @@ public class App extends JFrame {
     }
 
     public static void main(String[] args) {
+        FlatLightLaf.setup();
+//        FlatLightLaf.setup(new FlatDarkLaf());
+
         EventQueue.invokeLater(() -> {
             var ex = new App();
             ex.setVisible(true);
