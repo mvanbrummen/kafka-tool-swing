@@ -54,7 +54,10 @@ public class TopicsPanel extends JPanel {
         b2.add(BorderLayout.NORTH, toolbar2);
         b2.add(BorderLayout.CENTER, buildTable());
 
-        splitPane.setRightComponent(b2);
+        var tabbedPane = new JTabbedPane();
+        tabbedPane.add("Topics", b2);
+
+        splitPane.setRightComponent(tabbedPane);
 
 
         add(BorderLayout.CENTER, splitPane);
