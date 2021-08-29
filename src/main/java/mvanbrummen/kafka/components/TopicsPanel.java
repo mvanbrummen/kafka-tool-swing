@@ -35,7 +35,11 @@ public class TopicsPanel extends JPanel {
         var refreshButton = new JButton();
         refreshButton.setIcon(new FlatSVGIcon("icons/refresh.svg"));
         var toolbar2 = new JToolBar();
-        var topicSearchTextField = new JTextField("Search topics");
+
+        var topicSearchTextField = new JTextField();
+        topicSearchTextField.setLayout(new BorderLayout());
+        var searchLabel = new JLabel(new FlatSVGIcon("icons/search.svg"));
+        topicSearchTextField.add(BorderLayout.EAST, searchLabel);
 
         var newTopicButton = new JButton("Add Topic");
         newTopicButton.setIcon(new FlatSVGIcon("icons/plus.svg"));
