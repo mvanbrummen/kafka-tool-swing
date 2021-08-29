@@ -28,12 +28,15 @@ public class TopicsPanel extends JPanel {
         b.add(BorderLayout.NORTH, toolbar);
         b.add(BorderLayout.CENTER, buildTree());
 
-
         splitPane.setLeftComponent(b);
         splitPane.setRightComponent(buildTable());
 
 
         add(BorderLayout.CENTER, splitPane);
+
+        var bottomToolbar = new JToolBar();
+        bottomToolbar.add(new JLabel("v0.0.1"));
+        add(BorderLayout.SOUTH, bottomToolbar);
 
         setPreferredSize(new Dimension(1000, 600));
 
