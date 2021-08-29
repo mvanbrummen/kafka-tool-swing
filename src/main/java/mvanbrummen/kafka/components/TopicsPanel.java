@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Set;
 
 public class TopicsPanel extends JPanel {
 
@@ -56,15 +57,39 @@ public class TopicsPanel extends JPanel {
         showInternalTopicsButton.setIcon(new FlatSVGIcon("icons/show.svg"));
         showInternalTopicsButton.setToolTipText("Toggle showing internal kafka topics");
 
+        showInternalTopicsButton.addActionListener(e -> {
+            if (showInternalTopicsButton.isSelected()) {
+                topicsTableSorter.setRowFilter(null);
+            } else {
+                topicsTableSorter.setRowFilter(RowFilter.notFilter(RowFilter.regexFilter("^_", 0)));
+            }
+        });
+
+
         topicSearchTextField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 System.out.println("Event in search field");
                 var text = topicSearchTextField.getText();
                 if (text.trim().length() == 0) {
-                    topicsTableSorter.setRowFilter(null);
+                    if (showInternalTopicsButton.isSelected()) {
+                        topicsTableSorter.setRowFilter(null);
+                    } else {
+                        topicsTableSorter.setRowFilter(RowFilter.notFilter(RowFilter.regexFilter("^_", 0)));
+                    }
                 } else {
-                    topicsTableSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    if (!showInternalTopicsButton.isSelected()) {
+                        topicsTableSorter.setRowFilter(RowFilter.andFilter(
+                                        Set.of(
+                                                RowFilter.notFilter(RowFilter.regexFilter("^_", 0)),
+                                                RowFilter.regexFilter("(?i)" + text)
+                                        )
+                                )
+                        );
+
+                    } else {
+                        topicsTableSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
                 }
             }
         });
@@ -124,6 +149,7 @@ public class TopicsPanel extends JPanel {
         var table = new JTable(topicsTableModel);
 
         topicsTableSorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+        topicsTableSorter.setRowFilter(RowFilter.notFilter(RowFilter.regexFilter("^_", 0)));
         table.setRowSorter(topicsTableSorter);
 
 
@@ -134,6 +160,8 @@ public class TopicsPanel extends JPanel {
         topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic5", "1", "0", "0", "0"});
         topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic6", "1", "0", "0", "0"});
         topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic7", "1", "0", "0", "0"});
+        topicsTableModel.addRow(new Object[]{"_confluent.metrics", "1", "0", "0", "0"});
+        topicsTableModel.addRow(new Object[]{"_confluent.statistics", "1", "0", "0", "0"});
 
         var sp = new JScrollPane(table);
 
