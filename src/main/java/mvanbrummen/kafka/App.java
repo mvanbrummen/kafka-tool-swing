@@ -5,10 +5,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.util.SystemInfo;
 import mvanbrummen.kafka.view.MainView;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class App extends JFrame {
+public class App {
 
     public static void main(String[] args) {
         // on macOS enable screen menu bar

@@ -1,6 +1,7 @@
 package mvanbrummen.kafka.components;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import mvanbrummen.kafka.models.TopicsTableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -144,7 +145,7 @@ public class TopicsPanel extends JPanel {
     }
 
     private JScrollPane buildTable() {
-        topicsTableModel = new DefaultTableModel(new String[]{"Topic name", "Partitions", "Count", "Size", "Consumers"}, 0);
+        topicsTableModel = new TopicsTableModel();
 
         var table = new JTable(topicsTableModel);
 
