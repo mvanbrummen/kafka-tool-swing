@@ -1,4 +1,4 @@
-package mvanbrummen.kafka.components;
+package mvanbrummen.kafka.view;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import mvanbrummen.kafka.models.TopicsTableModel;
@@ -8,12 +8,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Set;
 
 public class TopicsPanel extends JPanel {
 
+    private JTable topicsTable;
+    private JButton refreshButton;
+    
     private DefaultTableModel topicsTableModel;
     private TableRowSorter<DefaultTableModel> topicsTableSorter;
 
@@ -41,7 +45,7 @@ public class TopicsPanel extends JPanel {
 
         var b2 = new JPanel(new BorderLayout());
 
-        var refreshButton = new JButton();
+        refreshButton = new JButton();
 
         refreshButton.setIcon(new FlatSVGIcon("icons/refresh.svg"));
         var toolbar2 = new JToolBar();
@@ -147,26 +151,25 @@ public class TopicsPanel extends JPanel {
     private JScrollPane buildTable() {
         topicsTableModel = new TopicsTableModel();
 
-        var table = new JTable(topicsTableModel);
+        topicsTable = new JTable(topicsTableModel);
 
-        topicsTableSorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
+        topicsTableSorter = new TableRowSorter<>((DefaultTableModel) topicsTable.getModel());
         topicsTableSorter.setRowFilter(RowFilter.notFilter(RowFilter.regexFilter("^_", 0)));
-        table.setRowSorter(topicsTableSorter);
+        topicsTable.setRowSorter(topicsTableSorter);
 
-
-        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic", "1", "0", "0", "0"});
-        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic2", "1", "0", "0", "0"});
-        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic3", "1", "0", "0", "0"});
-        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic4", "69", "0", "0", "0"});
-        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic5", "1", "0", "0", "0"});
-        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic6", "1", "0", "0", "0"});
-        topicsTableModel.addRow(new Object[]{"property.foo.foo.foo-topic7", "1", "0", "0", "0"});
-        topicsTableModel.addRow(new Object[]{"_confluent.metrics", "1", "0", "0", "0"});
-        topicsTableModel.addRow(new Object[]{"_confluent.statistics", "1", "0", "0", "0"});
-
-        var sp = new JScrollPane(table);
+        var sp = new JScrollPane(topicsTable);
 
         return sp;
+    }
+
+    public void setTopics(java.util.List<String> topics) {
+        final var tableModel = (TopicsTableModel) topicsTable.getModel();
+
+        topics.forEach(i -> tableModel.addRow(new Object[]{i, "1", "0", "0", "0"}));
+    }
+
+    public void refreshButton(ActionListener actionListener) {
+        refreshButton.addActionListener(actionListener);
     }
 
 }

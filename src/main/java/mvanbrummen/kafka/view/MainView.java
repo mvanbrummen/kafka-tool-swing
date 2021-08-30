@@ -1,6 +1,6 @@
 package mvanbrummen.kafka.view;
 
-import mvanbrummen.kafka.components.TopicsPanel;
+import mvanbrummen.kafka.controller.TopicsController;
 
 import javax.swing.*;
 
@@ -11,7 +11,11 @@ public class MainView extends JFrame {
     }
 
     private void initUI() {
-        add(new TopicsPanel());
+        var topicsPanel = new TopicsPanel();
+
+        add(topicsPanel);
+
+        new TopicsController(topicsPanel);
 
         pack();
 
