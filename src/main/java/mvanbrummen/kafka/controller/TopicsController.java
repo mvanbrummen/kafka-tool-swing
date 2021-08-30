@@ -43,7 +43,7 @@ public class TopicsController {
 
         // TODO load cluster
         this.clusterPanel.addClusterButton(e -> {
-            JOptionPane.showMessageDialog(this.clusterPanel, "Adding new cluster", "New",
+            JOptionPane.showMessageDialog(this.clusterPanel.getRootPane(), "Adding new cluster", "New",
                     JOptionPane.INFORMATION_MESSAGE);
         });
 

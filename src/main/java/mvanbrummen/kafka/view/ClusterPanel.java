@@ -30,7 +30,7 @@ public class ClusterPanel extends JPanel {
     private JScrollPane buildTree() {
         var clusters = new DefaultMutableTreeNode("Clusters");
 
-        var cluster1 = new DefaultMutableTreeNode("pkc-e09o6.australia-southeast1.gcp.confluent.cloud:9092");
+        var cluster1 = new DefaultMutableTreeNode("Confluent pkc-e09o6");
 
         clusters.add(cluster1);
 
