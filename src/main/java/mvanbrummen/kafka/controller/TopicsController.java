@@ -1,18 +1,22 @@
 package mvanbrummen.kafka.controller;
 
+import mvanbrummen.kafka.view.ClusterPanel;
 import mvanbrummen.kafka.view.TopicsPanel;
 
+import javax.swing.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TopicsController {
+    private ClusterPanel clusterPanel;
     private TopicsPanel topicsPanel;
 
     // TODO inject kafka client
-    public TopicsController(TopicsPanel topicsPanel) {
+    public TopicsController(ClusterPanel clusterPanel, TopicsPanel topicsPanel) {
         this.topicsPanel = topicsPanel;
+        this.clusterPanel = clusterPanel;
 
         // TODO fetch topics
         var topics = List.of(
@@ -36,6 +40,12 @@ public class TopicsController {
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList())
         ));
+
+        // TODO load cluster
+        this.clusterPanel.addClusterButton(e -> {
+            JOptionPane.showMessageDialog(this.clusterPanel, "Adding new cluster", "New",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
 
     }
 }

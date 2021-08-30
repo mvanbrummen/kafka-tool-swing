@@ -6,43 +6,24 @@ import mvanbrummen.kafka.models.TopicsTableModel;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Set;
 
-public class TopicsPanel extends JPanel {
+public class TopicsPanel extends JTabbedPane {
 
     private JTable topicsTable;
     private JButton refreshButton;
-    
-    private DefaultTableModel topicsTableModel;
+
     private TableRowSorter<DefaultTableModel> topicsTableSorter;
 
     public TopicsPanel() {
-        super(new BorderLayout());
         initUI();
     }
 
     private void initUI() {
-        var splitPane = new JSplitPane();
-
-        var toolbar = new JToolBar();
-        var addButton = new JButton();
-        addButton.setToolTipText("Add a new cluster");
-        addButton.setIcon(new FlatSVGIcon("icons/plus.svg"));
-        toolbar.add(addButton);
-        toolbar.addSeparator();
-
-        var b = new JPanel(new BorderLayout());
-
-        b.add(BorderLayout.NORTH, toolbar);
-        b.add(BorderLayout.CENTER, buildTree());
-
-        splitPane.setLeftComponent(b);
-
         var b2 = new JPanel(new BorderLayout());
 
         refreshButton = new JButton();
@@ -106,50 +87,15 @@ public class TopicsPanel extends JPanel {
         toolbar2.addSeparator();
         toolbar2.add(newTopicButton);
 
-
         b2.add(BorderLayout.NORTH, toolbar2);
         b2.add(BorderLayout.CENTER, buildTable());
 
-        var tabbedPane = new JTabbedPane();
-        tabbedPane.add("Topics", b2);
-
-        splitPane.setRightComponent(tabbedPane);
-
-
-        add(BorderLayout.CENTER, splitPane);
-
-        var bottomToolbar = new JToolBar();
-        bottomToolbar.add(new JLabel("v0.0.1"));
-        add(BorderLayout.SOUTH, bottomToolbar);
-
-        setPreferredSize(new Dimension(1000, 600));
+        add("Topics", b2);
     }
 
-    private JScrollPane buildTree() {
-
-        var clusters = new DefaultMutableTreeNode("Clusters");
-
-        var cluster1 = new DefaultMutableTreeNode("pkc-e09o6.australia-southeast1.gcp.confluent.cloud:9092");
-
-        clusters.add(cluster1);
-
-        var brokers = new DefaultMutableTreeNode("Brokers");
-        var topics = new DefaultMutableTreeNode("Topics");
-        var consumers = new DefaultMutableTreeNode("Consumers");
-        var schemaRegistry = new DefaultMutableTreeNode("Schema Registry");
-
-        cluster1.add(brokers);
-        cluster1.add(topics);
-        cluster1.add(consumers);
-        cluster1.add(schemaRegistry);
-
-        var tree = new JTree(clusters);
-
-        return new JScrollPane(tree);
-    }
 
     private JScrollPane buildTable() {
-        topicsTableModel = new TopicsTableModel();
+        DefaultTableModel topicsTableModel = new TopicsTableModel();
 
         topicsTable = new JTable(topicsTableModel);
 

@@ -3,6 +3,7 @@ package mvanbrummen.kafka.view;
 import mvanbrummen.kafka.controller.TopicsController;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainView extends JFrame {
 
@@ -12,10 +13,22 @@ public class MainView extends JFrame {
 
     private void initUI() {
         var topicsPanel = new TopicsPanel();
+        var clusterPanel = new ClusterPanel();
 
-        add(topicsPanel);
+        var splitPane = new JSplitPane();
 
-        new TopicsController(topicsPanel);
+        splitPane.setLeftComponent(clusterPanel);
+        splitPane.setRightComponent(topicsPanel);
+
+        add(BorderLayout.CENTER, splitPane);
+
+        var bottomToolbar = new JToolBar();
+        bottomToolbar.add(new JLabel("v0.0.1"));
+        add(BorderLayout.SOUTH, bottomToolbar);
+
+        add(splitPane);
+
+        new TopicsController(clusterPanel, topicsPanel);
 
         pack();
 
