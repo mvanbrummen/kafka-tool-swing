@@ -1,5 +1,6 @@
 package mvanbrummen.kafka.view;
 
+import mvanbrummen.kafka.controller.BrokersController;
 import mvanbrummen.kafka.controller.ClusterController;
 import mvanbrummen.kafka.controller.TopicsController;
 
@@ -15,6 +16,7 @@ public class MainView extends JFrame {
     private void initUI() {
         var topicsPanel = new TopicsPanel();
         var clusterPanel = new ClusterPanel();
+        var brokersPanel = new BrokersPanel();
 
         var splitPane = new JSplitPane();
 
@@ -22,11 +24,12 @@ public class MainView extends JFrame {
         var cardLayout = new JPanel(cards);
 
         cardLayout.add("Topics", topicsPanel);
-        cardLayout.add("Brokers", new BrokersPanel());
+        cardLayout.add("Brokers", brokersPanel);
         cardLayout.add("Consumers", new ConsumersPanel());
         cardLayout.add("Schema Registry", new SchemaRegistryPanel());
 
         new ClusterController(clusterPanel, cardLayout);
+        new BrokersController(brokersPanel);
 
         splitPane.setLeftComponent(clusterPanel);
         splitPane.setRightComponent(cardLayout);
