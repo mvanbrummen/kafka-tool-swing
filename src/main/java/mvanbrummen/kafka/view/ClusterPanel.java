@@ -6,10 +6,13 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 public class ClusterPanel extends JPanel {
 
     private JButton addClusterButton;
+
+    private JTree clustersTree;
 
     public ClusterPanel() {
         super(new BorderLayout());
@@ -44,12 +47,20 @@ public class ClusterPanel extends JPanel {
         cluster1.add(consumers);
         cluster1.add(schemaRegistry);
 
-        var tree = new JTree(clusters);
+        clustersTree = new JTree(clusters);
 
-        return new JScrollPane(tree);
+        return new JScrollPane(clustersTree);
+    }
+
+    public JTree getClustersTree() {
+        return clustersTree;
     }
 
     public void addClusterButton(ActionListener actionListener) {
         this.addClusterButton.addActionListener(actionListener);
+    }
+
+    public void addClustersTreeListener(MouseAdapter mouseAdapter) {
+        clustersTree.addMouseListener(mouseAdapter);
     }
 }

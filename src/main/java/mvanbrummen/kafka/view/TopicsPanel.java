@@ -16,6 +16,7 @@ public class TopicsPanel extends JTabbedPane {
 
     private JTable topicsTable;
     private JButton refreshButton;
+    private JButton addNewTopicButton;
 
     private TableRowSorter<DefaultTableModel> topicsTableSorter;
 
@@ -36,8 +37,8 @@ public class TopicsPanel extends JTabbedPane {
         var searchLabel = new JLabel(new FlatSVGIcon("icons/search.svg"));
         topicSearchTextField.add(BorderLayout.EAST, searchLabel);
 
-        var newTopicButton = new JButton("Add Topic");
-        newTopicButton.setIcon(new FlatSVGIcon("icons/plus.svg"));
+        addNewTopicButton = new JButton("Add Topic");
+        addNewTopicButton.setIcon(new FlatSVGIcon("icons/plus.svg"));
 
         var showInternalTopicsButton = new JToggleButton();
         showInternalTopicsButton.setIcon(new FlatSVGIcon("icons/show.svg"));
@@ -85,12 +86,12 @@ public class TopicsPanel extends JTabbedPane {
         toolbar2.addSeparator();
         toolbar2.add(refreshButton);
         toolbar2.addSeparator();
-        toolbar2.add(newTopicButton);
+        toolbar2.add(addNewTopicButton);
 
         b2.add(BorderLayout.NORTH, toolbar2);
         b2.add(BorderLayout.CENTER, buildTable());
 
-        add("Topics", b2);
+        add("Topics (0)", b2);
     }
 
 
@@ -108,6 +109,10 @@ public class TopicsPanel extends JTabbedPane {
         return sp;
     }
 
+    public void setTopicCount(int count) {
+        this.setTitleAt(0, "Topics (" + count + ")");
+    }
+
     public void setTopics(java.util.List<String> topics) {
         final var tableModel = (TopicsTableModel) topicsTable.getModel();
 
@@ -116,6 +121,10 @@ public class TopicsPanel extends JTabbedPane {
 
     public void refreshButton(ActionListener actionListener) {
         refreshButton.addActionListener(actionListener);
+    }
+
+    public void addNewTopicButton(ActionListener actionListener) {
+        addNewTopicButton.addActionListener(actionListener);
     }
 
 }
