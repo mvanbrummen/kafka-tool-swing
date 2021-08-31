@@ -27,10 +27,17 @@ public class TopicsPanel extends JTabbedPane {
     private void initUI() {
         var b2 = new JPanel(new BorderLayout());
 
+        b2.add(BorderLayout.NORTH, buildToolbar());
+        b2.add(BorderLayout.CENTER, buildTable());
+
+        add("Topics (0)", b2);
+    }
+
+    private JToolBar buildToolbar() {
         refreshButton = new JButton();
 
         refreshButton.setIcon(new FlatSVGIcon("icons/refresh.svg"));
-        var toolbar2 = new JToolBar();
+        var toolbar = new JToolBar();
 
         var topicSearchTextField = new JTextField();
         topicSearchTextField.setLayout(new BorderLayout());
@@ -81,19 +88,15 @@ public class TopicsPanel extends JTabbedPane {
             }
         });
 
-        toolbar2.add(topicSearchTextField);
-        toolbar2.add(showInternalTopicsButton);
-        toolbar2.addSeparator();
-        toolbar2.add(refreshButton);
-        toolbar2.addSeparator();
-        toolbar2.add(addNewTopicButton);
+        toolbar.add(topicSearchTextField);
+        toolbar.add(showInternalTopicsButton);
+        toolbar.addSeparator();
+        toolbar.add(refreshButton);
+        toolbar.addSeparator();
+        toolbar.add(addNewTopicButton);
 
-        b2.add(BorderLayout.NORTH, toolbar2);
-        b2.add(BorderLayout.CENTER, buildTable());
-
-        add("Topics (0)", b2);
+        return toolbar;
     }
-
 
     private JScrollPane buildTable() {
         DefaultTableModel topicsTableModel = new TopicsTableModel();

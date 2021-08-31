@@ -1,5 +1,6 @@
 package mvanbrummen.kafka.view;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import mvanbrummen.kafka.models.BrokersTableModel;
 import org.apache.kafka.common.Node;
 
@@ -11,6 +12,7 @@ public class BrokersPanel extends JTabbedPane {
 
     private DefaultTableModel brokersTableModel;
     private JTable brokersTable;
+    private JButton refreshButton;
 
     public BrokersPanel() {
         initUI();
@@ -19,9 +21,29 @@ public class BrokersPanel extends JTabbedPane {
     private void initUI() {
         var borderLayout = new JPanel(new BorderLayout());
 
+        borderLayout.add(BorderLayout.NORTH, buildToolbar());
         borderLayout.add(BorderLayout.CENTER, buildTable());
 
         add("Brokers", borderLayout);
+    }
+
+    private JToolBar buildToolbar() {
+        refreshButton = new JButton();
+
+        refreshButton.setIcon(new FlatSVGIcon("icons/refresh.svg"));
+        var toolbar = new JToolBar();
+
+        var topicSearchTextField = new JTextField();
+        topicSearchTextField.setLayout(new BorderLayout());
+        var searchLabel = new JLabel(new FlatSVGIcon("icons/search.svg"));
+        topicSearchTextField.add(BorderLayout.EAST, searchLabel);
+
+        toolbar.add(topicSearchTextField);
+        toolbar.addSeparator();
+        toolbar.add(refreshButton);
+        toolbar.addSeparator();
+
+        return toolbar;
     }
 
     private JScrollPane buildTable() {
