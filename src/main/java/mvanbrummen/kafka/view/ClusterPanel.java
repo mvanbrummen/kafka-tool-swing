@@ -33,23 +33,28 @@ public class ClusterPanel extends JPanel {
     private JScrollPane buildTree() {
         var clusters = new DefaultMutableTreeNode("Clusters");
 
-        var cluster1 = new DefaultMutableTreeNode("Confluent pkc-e09o6");
+        // TODO for each cluster in config
+        clusters.add(buildSubtree("Confluent pcrei3"));
 
-        clusters.add(cluster1);
+        clustersTree = new JTree(clusters);
+
+        return new JScrollPane(clustersTree);
+    }
+
+    private DefaultMutableTreeNode buildSubtree(String clusterName) {
+        var subtree = new DefaultMutableTreeNode(clusterName);
 
         var brokers = new DefaultMutableTreeNode("Brokers");
         var topics = new DefaultMutableTreeNode("Topics");
         var consumers = new DefaultMutableTreeNode("Consumers");
         var schemaRegistry = new DefaultMutableTreeNode("Schema Registry");
 
-        cluster1.add(brokers);
-        cluster1.add(topics);
-        cluster1.add(consumers);
-        cluster1.add(schemaRegistry);
+        subtree.add(brokers);
+        subtree.add(topics);
+        subtree.add(consumers);
+        subtree.add(schemaRegistry);
 
-        clustersTree = new JTree(clusters);
-
-        return new JScrollPane(clustersTree);
+        return subtree;
     }
 
     public JTree getClustersTree() {

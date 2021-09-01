@@ -1,6 +1,7 @@
 package mvanbrummen.kafka.view;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import mvanbrummen.kafka.models.DataTableModel;
 import mvanbrummen.kafka.models.TopicsTableModel;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.util.Set;
 
 public class TopicsPanel extends JTabbedPane {
@@ -17,6 +19,8 @@ public class TopicsPanel extends JTabbedPane {
     private JTable topicsTable;
     private JButton refreshButton;
     private JButton addNewTopicButton;
+
+    private JSplitPane detailsSplitPane;
 
     private TableRowSorter<DefaultTableModel> topicsTableSorter;
 
@@ -27,10 +31,41 @@ public class TopicsPanel extends JTabbedPane {
     private void initUI() {
         var b2 = new JPanel(new BorderLayout());
 
+        detailsSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                buildTable(),
+                buildDetails()
+        );
+
+        // hide details by default
+        detailsSplitPane.setDividerLocation(0);
+        detailsSplitPane.getTopComponent().setVisible(true);
+        detailsSplitPane.getBottomComponent().setVisible(false);
+
         b2.add(BorderLayout.NORTH, buildToolbar());
-        b2.add(BorderLayout.CENTER, buildTable());
+        b2.add(BorderLayout.CENTER, detailsSplitPane);
 
         add("Topics (0)", b2);
+    }
+
+    private JTabbedPane buildDetails() {
+        var detailsPanel = new JTabbedPane();
+
+        var b = new JPanel(new BorderLayout());
+        var dataTable = new JScrollPane(new JTable(new DataTableModel()));
+
+        var t = new JToolBar();
+        t.add(new JButton("Play"));
+        t.add(new JButton("Pause"));
+
+        b.add(BorderLayout.NORTH, t);
+        b.add(BorderLayout.CENTER, dataTable);
+
+        detailsPanel.add("Data", b);
+        detailsPanel.add("Partitions", new JLabel("partitions"));
+        detailsPanel.add("Consumers", new JLabel("consumers"));
+        detailsPanel.add("Configuration", new JLabel("Configuration"));
+
+        return detailsPanel;
     }
 
     private JToolBar buildToolbar() {
@@ -130,4 +165,20 @@ public class TopicsPanel extends JTabbedPane {
         addNewTopicButton.addActionListener(actionListener);
     }
 
+    public JSplitPane getDetailsSplitPane() {
+        return detailsSplitPane;
+    }
+
+    public void showDetailsSplitPane() {
+        detailsSplitPane.getBottomComponent().setVisible(true);
+        detailsSplitPane.setDividerLocation(0.5);
+    }
+
+    public void topicsTable(MouseAdapter mouseAdapter) {
+        this.topicsTable.addMouseListener(mouseAdapter);
+    }
+
+    public JTable getTopicsTable() {
+        return topicsTable;
+    }
 }
