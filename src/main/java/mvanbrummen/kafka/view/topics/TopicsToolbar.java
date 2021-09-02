@@ -23,7 +23,6 @@ public class TopicsToolbar extends JToolBar {
 
         refreshButton.setIcon(new FlatSVGIcon("icons/refresh.svg"));
 
-        var topicSearchTextField = new JTextField();
         topicSearchTextField.setLayout(new BorderLayout());
         var searchLabel = new JLabel(new FlatSVGIcon("icons/search.svg"));
         topicSearchTextField.add(BorderLayout.EAST, searchLabel);

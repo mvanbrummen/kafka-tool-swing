@@ -1,4 +1,4 @@
-package mvanbrummen.kafka.view;
+package mvanbrummen.kafka.view.schemas;
 
 import javax.swing.*;
 

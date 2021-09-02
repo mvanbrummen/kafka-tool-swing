@@ -1,20 +1,20 @@
-package mvanbrummen.kafka.view;
+package mvanbrummen.kafka.view.consumers;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import mvanbrummen.kafka.models.BrokersTableModel;
-import org.apache.kafka.common.Node;
+import mvanbrummen.kafka.models.ConsumersTableModel;
+import org.apache.kafka.clients.admin.ConsumerGroupListing;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class BrokersPanel extends JTabbedPane {
+public class ConsumersPanel extends JTabbedPane {
 
-    private DefaultTableModel brokersTableModel;
-    private JTable brokersTable;
+    private DefaultTableModel consumersTableModel;
+    private JTable consumersTable;
     private JButton refreshButton;
 
-    public BrokersPanel() {
+    public ConsumersPanel() {
         initUI();
     }
 
@@ -24,7 +24,7 @@ public class BrokersPanel extends JTabbedPane {
         borderLayout.add(BorderLayout.NORTH, buildToolbar());
         borderLayout.add(BorderLayout.CENTER, buildTable());
 
-        add("Brokers", borderLayout);
+        add("Consumers", borderLayout);
     }
 
     private JToolBar buildToolbar() {
@@ -47,18 +47,18 @@ public class BrokersPanel extends JTabbedPane {
     }
 
     private JScrollPane buildTable() {
-        brokersTableModel = new BrokersTableModel();
+        consumersTableModel = new ConsumersTableModel();
 
-        brokersTable = new JTable(brokersTableModel);
+        consumersTable = new JTable(consumersTableModel);
 
-        var sp = new JScrollPane(brokersTable);
+        var sp = new JScrollPane(consumersTable);
 
         return sp;
     }
 
-    public void setBrokers(java.util.List<Node> brokers) {
-        final var tableModel = (BrokersTableModel) brokersTable.getModel();
+    public void setConsumers(java.util.List<ConsumerGroupListing> consumers) {
+        final var tableModel = (ConsumersTableModel) consumersTable.getModel();
 
-        brokers.forEach(i -> tableModel.addRow(new Object[]{i.idString(), i.rack(), i.host()}));
+        consumers.forEach(i -> tableModel.addRow(new Object[]{i.groupId(), "-", "0", "0"}));
     }
 }

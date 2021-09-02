@@ -1,20 +1,20 @@
-package mvanbrummen.kafka.view;
+package mvanbrummen.kafka.view.brokers;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import mvanbrummen.kafka.models.ConsumersTableModel;
-import org.apache.kafka.clients.admin.ConsumerGroupListing;
+import mvanbrummen.kafka.models.BrokersTableModel;
+import org.apache.kafka.common.Node;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class ConsumersPanel extends JTabbedPane {
+public class BrokersPanel extends JTabbedPane {
 
-    private DefaultTableModel consumersTableModel;
-    private JTable consumersTable;
+    private DefaultTableModel brokersTableModel;
+    private JTable brokersTable;
     private JButton refreshButton;
 
-    public ConsumersPanel() {
+    public BrokersPanel() {
         initUI();
     }
 
@@ -24,7 +24,7 @@ public class ConsumersPanel extends JTabbedPane {
         borderLayout.add(BorderLayout.NORTH, buildToolbar());
         borderLayout.add(BorderLayout.CENTER, buildTable());
 
-        add("Consumers", borderLayout);
+        add("Brokers", borderLayout);
     }
 
     private JToolBar buildToolbar() {
@@ -47,18 +47,18 @@ public class ConsumersPanel extends JTabbedPane {
     }
 
     private JScrollPane buildTable() {
-        consumersTableModel = new ConsumersTableModel();
+        brokersTableModel = new BrokersTableModel();
 
-        consumersTable = new JTable(consumersTableModel);
+        brokersTable = new JTable(brokersTableModel);
 
-        var sp = new JScrollPane(consumersTable);
+        var sp = new JScrollPane(brokersTable);
 
         return sp;
     }
 
-    public void setConsumers(java.util.List<ConsumerGroupListing> consumers) {
-        final var tableModel = (ConsumersTableModel) consumersTable.getModel();
+    public void setBrokers(java.util.List<Node> brokers) {
+        final var tableModel = (BrokersTableModel) brokersTable.getModel();
 
-        consumers.forEach(i -> tableModel.addRow(new Object[]{i.groupId(), "-", "0", "0"}));
+        brokers.forEach(i -> tableModel.addRow(new Object[]{i.idString(), i.rack(), i.host()}));
     }
 }

@@ -1,7 +1,7 @@
 package mvanbrummen.kafka.controller;
 
 import mvanbrummen.kafka.clients.Kafka;
-import mvanbrummen.kafka.view.BrokersPanel;
+import mvanbrummen.kafka.view.brokers.BrokersPanel;
 import org.apache.kafka.common.Node;
 
 import java.util.ArrayList;

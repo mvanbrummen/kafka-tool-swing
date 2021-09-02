@@ -1,9 +1,8 @@
 package mvanbrummen.kafka.controller;
 
 import mvanbrummen.kafka.clients.Kafka;
-import mvanbrummen.kafka.view.ConsumersPanel;
+import mvanbrummen.kafka.view.consumers.ConsumersPanel;
 import org.apache.kafka.clients.admin.ConsumerGroupListing;
-import org.apache.kafka.common.Node;
 
 import java.util.ArrayList;
 import java.util.List;
