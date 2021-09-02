@@ -4,6 +4,7 @@ import mvanbrummen.kafka.controller.BrokersController;
 import mvanbrummen.kafka.controller.ClusterController;
 import mvanbrummen.kafka.controller.ConsumersController;
 import mvanbrummen.kafka.controller.TopicsController;
+import mvanbrummen.kafka.view.topics.TopicsPanel;
 
 import javax.swing.*;
 import java.awt.*;
